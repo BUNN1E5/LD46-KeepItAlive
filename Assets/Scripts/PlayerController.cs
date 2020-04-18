@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded)
         {
-            if ((GetSpeed() < maxVel && vert > 0f) || (GetSpeed() < maxReverse && vert < 0f))
+            if ((rb.velocity.magnitude < maxVel && vert > 0f) || (rb.velocity.magnitude < maxReverse && vert < 0f))
             {
                 rb.AddForce(transform.forward * accel * vert);
             }
@@ -55,11 +55,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = false;
     }
 
-	public float GetSpeed() {
-		return rb.velocity.magnitude;
-	}
-
-	public float GetMaxVel() {
-		return maxVel;
+	public float GetSpeedNormalized() {
+		return rb.velocity.normalized.magnitude;
 	}
 }
