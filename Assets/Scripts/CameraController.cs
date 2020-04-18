@@ -5,10 +5,10 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 
-    public Transform player;
+    public PlayerController player;
 
-    [Range(0, 6.28f)]
-    public float theta, phi = .68f;
+    public float offsetPhi = .68f;
+    float theta, phi = .68f;
 
     public float distance = 12;
 
@@ -36,13 +36,16 @@ public class CameraController : MonoBehaviour
         //Also the angle should be relative to the relative back of the vehicle
         //float _theta = theta * Mathf.Deg2Rad;
         //float _phi = phi * Mathf.Deg2Rad;
-        theta = Mathf.LerpAngle(theta, -(player.rotation.eulerAngles.y), TurnSmoothness * Time.deltaTime);
+        theta = Mathf.LerpAngle(theta, -(player.transform.rotation.eulerAngles.y), TurnSmoothness * Time.deltaTime);
         float _theta = (theta - 90) * Mathf.Deg2Rad ;
+
+        phi = Mathf.LerpAngle(phi, (-player.GetSpeedNormalized() * .1f) + offsetPhi, TurnSmoothness * Time.deltaTime);
+        float _phi = phi * Mathf.Deg2Rad;
         //TODO phi move the camera down a bit proportional to speed
 
         goalPos = angle2Vec3(theta, phi) * distance;
 
-        this.transform.position = player.position + angle2Vec3(_theta, phi) * distance;
+        this.transform.position = player.transform.position + angle2Vec3(_theta, phi) * distance;
         //this.transform.position = player.position;
 
     }
@@ -56,6 +59,6 @@ public class CameraController : MonoBehaviour
     }
 
     void OnDrawGizmos(){
-        Gizmos.DrawWireSphere(goalPos, .5f);
+        Gizmos.DrawWireSphere(player.transform.position + goalPos, .5f);
     }
 }
