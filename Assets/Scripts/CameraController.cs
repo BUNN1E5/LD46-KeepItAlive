@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour
         //float _theta = theta * Mathf.Deg2Rad;
         //float _phi = phi * Mathf.Deg2Rad;
 
-        theta = player.rotation.eulerAngles.y * Mathf.Deg2Rad;
+        theta = (-player.rotation.eulerAngles.y - 90) * Mathf.Deg2Rad;
 
         float x = Mathf.Cos (theta) * Mathf.Cos (phi);
         float y = Mathf.Sin (phi);
