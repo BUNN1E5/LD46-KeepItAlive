@@ -5,12 +5,12 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
 #pragma warning disable 0649
-    [SerializeField] float accel, steering, maxVel, maxReverse;
+    [SerializeField] float accel, steering, handbrake, maxVel, maxReverse;
 #pragma warning restore 0649
 
     Rigidbody rb;
     float vert, horiz;
-    bool isGrounded;
+    bool isGrounded, isHandbrakeOn;
 
     void Awake()
     {
@@ -25,8 +25,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        vert = Input.GetAxis("Vertical");
-        horiz = Input.GetAxis("Horizontal");
+		isHandbrakeOn = Input.GetAxisRaw("Fire3") > 0f;
+        if (!isHandbrakeOn)
+        {
+            vert = Input.GetAxis("Vertical");
+        	horiz = Input.GetAxis("Horizontal");
+        }
     }
 
     void FixedUpdate()
@@ -37,7 +41,7 @@ public class PlayerController : MonoBehaviour
             {
                 rb.AddForce(transform.forward * accel * vert);
             }
-			rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * steering * horiz));
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * (isHandbrakeOn ? handbrake : steering) * horiz));
         }
     }
 

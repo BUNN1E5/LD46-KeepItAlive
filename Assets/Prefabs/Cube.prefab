@@ -125,9 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   accel: 15
-  steering: 5
-  maxVel: 140
-  maxReverse: 20
+  steering: 2
+  handbrake: 5
+  maxVel: 80
+  maxReverse: 10
 --- !u!1 &2473035191308855240
 GameObject:
   m_ObjectHideFlags: 0
