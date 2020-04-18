@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
     {
 
         //We always want to look at the player
-        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookAt(player), LookSmoothness * Time.deltaTime);
+        //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookAt(player), LookSmoothness * Time.deltaTime);
 
 
     }
