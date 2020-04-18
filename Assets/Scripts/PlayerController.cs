@@ -5,15 +5,17 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
 #pragma warning disable 0649
-    [SerializeField] float speedForce, torqueForce, driftFactorSticky, driftFactorSlippy, maxStickyVelocity;
+    [SerializeField] float accel, steering, maxVel, maxReverse;
 #pragma warning restore 0649
 
     Rigidbody rb;
     float vert, horiz;
+    bool isGrounded;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        isGrounded = true;
     }
 
     void Start()
@@ -29,26 +31,23 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        float driftFactor = driftFactorSticky;
-        if (RightVelocity().magnitude > maxStickyVelocity)
+        if (isGrounded)
         {
-            driftFactor = driftFactorSlippy;
+            if ((rb.velocity.magnitude < maxVel && vert > 0f) || (rb.velocity.magnitude < maxReverse && vert < 0f))
+            {
+                rb.AddForce(transform.forward * accel * vert);
+            }
+			rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * steering * horiz));
         }
-
-        rb.velocity = ForwardVelocity() + RightVelocity() * driftFactor;
-
-		rb.AddForce(transform.forward * speedForce * vert);
-
-        rb.angularVelocity = new Vector3(horiz * Mathf.Lerp(0, torqueForce, rb.velocity.magnitude / 2), 0, 0);
     }
 
-    Vector3 ForwardVelocity()
+    void OnCollisionEnter()
     {
-        return transform.forward * Vector3.Dot(rb.velocity, transform.forward);
+        isGrounded = true;
     }
 
-    Vector3 RightVelocity()
+    void OnCollisionExit()
     {
-        return transform.right * Vector3.Dot(rb.velocity, transform.right);
+        isGrounded = false;
     }
 }
