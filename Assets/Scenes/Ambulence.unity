@@ -389,11 +389,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b0027fe355fdc43922fb51b57a4436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 150254327}
-  theta: 0
-  phi: 0.68
+  player: {fileID: 150254322}
+  offsetPhi: 0.68
   distance: 12
   LookSmoothness: 10
+  TurnSmoothness: 1
 --- !u!1 &723911505
 GameObject:
   m_ObjectHideFlags: 0

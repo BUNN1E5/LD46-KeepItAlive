@@ -56,6 +56,10 @@ public class PlayerController : MonoBehaviour
     }
 
 	public float GetSpeedNormalized() {
-		return rb.velocity.normalized.magnitude;
+		return  vert < 0f ? -rb.velocity.magnitude / maxReverse : rb.velocity.magnitude / maxVel;
+	}
+
+	public float GetAccelNormalized() {
+		return vert;
 	}
 }
