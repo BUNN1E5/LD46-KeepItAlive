@@ -4,8 +4,10 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
+	public float maxVel;
+
 #pragma warning disable 0649
-    [SerializeField] float accel, steering, handbrake, maxVel, maxReverse;
+    [SerializeField] float accel, steering, handbrake, maxReverse;
 #pragma warning restore 0649
 
     Rigidbody rb;
