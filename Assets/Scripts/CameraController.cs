@@ -7,18 +7,34 @@ public class CameraController : MonoBehaviour
 
     public PlayerController player;
 
+    [Header("Speed Drop")]
     public float offsetPhi = .68f;
+    public float speedDrop = .3f;
+    public float speedDropSmoothness = 1;
+
+    
+    Camera cam;
+    [Space]
+    [Header("Camera Settings")]
+    public float defaultFOV = 75;
+    public float speedFOVOffset = 10;
+
+    [Space]
+    [Header("Camera Effects Settings")]
+    
+
     float theta, phi = .68f;
 
+    [Space]
+    [Header("General Settings")]
     public float distance = 12;
-
     public float LookSmoothness = 10;
-    public float TurnSmoothness = 10;
+    public float TurnSmoothness = 1;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        cam = this.gameObject.GetComponent<Camera>();
     }
 
     Vector3 goalPos = Vector3.zero;
@@ -39,11 +55,12 @@ public class CameraController : MonoBehaviour
         theta = Mathf.LerpAngle(theta, -(player.transform.rotation.eulerAngles.y), TurnSmoothness * Time.deltaTime);
         float _theta = (theta - 90) * Mathf.Deg2Rad ;
 
-        phi = Mathf.LerpAngle(phi, (-player.GetSpeedNormalized() * .1f) + offsetPhi, TurnSmoothness * Time.deltaTime);
+        phi = Mathf.Lerp(phi, (-player.GetSpeedNormalized() * speedDrop) + offsetPhi, speedDropSmoothness * Time.deltaTime);
         float _phi = phi * Mathf.Deg2Rad;
         //TODO phi move the camera down a bit proportional to speed
 
         goalPos = angle2Vec3(theta, phi) * distance;
+        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView , defaultFOV + speedFOVOffset * player.GetSpeedNormalized(), speedDropSmoothness * Time.deltaTime);
 
         this.transform.position = player.transform.position + angle2Vec3(_theta, phi) * distance;
         //this.transform.position = player.position;
@@ -56,9 +73,5 @@ public class CameraController : MonoBehaviour
         float z = Mathf.Sin (theta) * Mathf.Cos (phi);
 
         return new Vector3(x, y, z);
-    }
-
-    void OnDrawGizmos(){
-        Gizmos.DrawWireSphere(player.transform.position + goalPos, .5f);
     }
 }
