@@ -29,8 +29,8 @@ public class PlayerController : MonoBehaviour
         if (!isHandbrakeOn)
         {
             vert = Input.GetAxis("Vertical");
-        	horiz = Input.GetAxis("Horizontal");
         }
+		horiz = Input.GetAxis("Horizontal");
     }
 
     void FixedUpdate()
