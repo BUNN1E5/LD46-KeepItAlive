@@ -282,7 +282,18 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1629849240}
+        m_MethodName: CheckGameOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!1 &390170992
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,7 +1134,8 @@ MonoBehaviour:
   maxRestInterval: 5
   trialDuration: 5
   difficulty: 1
-  maxHealth: 5
+  maxHealth: 10
+  healRatio: 0.025
 --- !u!1 &1957584907
 GameObject:
   m_ObjectHideFlags: 0

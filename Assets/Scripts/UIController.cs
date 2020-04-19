@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIController : MonoBehaviour
+public class UIController : SingletonGeneric<UIController>
 {
 #pragma warning disable 0649
-    [SerializeField] float minRestInterval, maxRestInterval, trialDuration, difficulty, maxHealth;
+    [SerializeField] float minRestInterval, maxRestInterval, trialDuration, difficulty, maxHealth, healRatio;
 #pragma warning restore 0649
 
     Slider health;
     WaitWhile whileTrying;
     bool gameIsOver, isInjecting;
     int trialNum;
-    float timer;
+    float timer, countResuscitations;
 
     void Start()
     {
@@ -26,12 +26,7 @@ public class UIController : MonoBehaviour
     void Update()
     {
         isInjecting = Input.GetButton("Fire1");
-        gameIsOver = health.value <= 0f;
-        if (gameIsOver)
-        {
-            Debug.Log("Game Over.");
-            this.enabled = false;
-        }
+        countResuscitations += Input.GetButtonDown("Fire2") ? 1f : 0f;
     }
 
     IEnumerator BeginTrials()
@@ -39,6 +34,11 @@ public class UIController : MonoBehaviour
         while (!gameIsOver)
         {
             yield return whileTrying;
+            if (gameIsOver)
+            {
+                Debug.Log("Game Over.");
+                this.enabled = false;
+            }
             yield return new WaitForSeconds(Random.Range(minRestInterval, maxRestInterval) / difficulty);
             timer = trialDuration * difficulty;
             trialNum = Random.Range(0, 2);
@@ -59,7 +59,8 @@ public class UIController : MonoBehaviour
         Debug.Log("Resuscitating...");
         while (IsTrying())
         {
-            health.value -= Time.deltaTime;
+            health.value += countResuscitations * healRatio * maxHealth / difficulty - Time.deltaTime;
+            countResuscitations = 0f;
             timer -= Time.deltaTime;
             yield return null;
         }
@@ -76,6 +77,11 @@ public class UIController : MonoBehaviour
             yield return null;
         }
         Debug.Log("Done!");
+    }
+
+    public void CheckGameOver()
+    {
+        if (health != null) gameIsOver = health.value <= 0f;
     }
 
     bool IsTrying()
