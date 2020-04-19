@@ -34,14 +34,17 @@ public class UIController : SingletonGeneric<UIController>
         while (!gameIsOver)
         {
             yield return whileTrying;
+            health.gameObject.SetActive(false);
             if (gameIsOver)
             {
                 Debug.Log("Game Over.");
-                this.enabled = false;
+                enabled = false;
+                break;
             }
             yield return new WaitForSeconds(Random.Range(minRestInterval, maxRestInterval) / difficulty);
             timer = trialDuration * difficulty;
             trialNum = Random.Range(0, 2);
+            health.gameObject.SetActive(true);
             switch (trialNum)
             {
                 case 0:

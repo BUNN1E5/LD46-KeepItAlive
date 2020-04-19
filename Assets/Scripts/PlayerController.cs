@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
@@ -14,8 +15,9 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     Transform[] tires;
     Light[] lights;
+    AudioSource[] sources;
     float vert, horiz;
-    bool isGrounded, isHandbrakeOn;
+    bool isGrounded, isHandbrakeOn, isSirenOn;
 
     void Start()
     {
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         tires = GetComponentsInChildren<Transform>();
         lights = GetComponentsInChildren<Light>();
+        sources = GetComponents<AudioSource>();
     }
 
     void Update()
@@ -35,6 +38,9 @@ public class PlayerController : MonoBehaviour
         horiz = Input.GetAxis("Horizontal");
         if (Input.GetButtonDown("Jump"))
         {
+            // TODO pitch rise and fall for siren on/off and engine speed
+            if (isSirenOn = !isSirenOn) sources[1].Play();
+            else sources[1].Stop();
             toggleSiren.Invoke();
         }
         if (Input.GetButtonDown("Jump2"))
@@ -93,6 +99,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Honk()
     {
+        sources[0].pitch = Random.Range(0.95f, 1.05f);
+        sources[0].PlayOneShot(sources[0].clip);
         lights[0].intensity = lights[1].intensity = 100f;
         yield return new WaitForSeconds(1f);
         lights[0].intensity = lights[1].intensity = 25f;
