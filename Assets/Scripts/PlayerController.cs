@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,11 +18,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         tires = GetComponentsInChildren<Transform>();
         isGrounded = true;
-    }
-
-    void Start()
-    {
-
     }
 
     void Update()
