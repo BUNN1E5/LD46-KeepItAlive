@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
 			// steering
             if (isHandbrakeOn)
             {
-                rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * Mathf.Pow(handbrake, traction) * horiz * GetSpeedNormalized()));
+                rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * Mathf.Pow(handbrake, traction) * horiz * rb.velocity.magnitude / maxVel));
             }
             else
             {
