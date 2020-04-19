@@ -151,7 +151,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 390170992}
   m_LocalRotation: {x: 0.30070576, y: 0, z: 0, w: 0.953717}
-  m_LocalPosition: {x: 0, y: 10, z: -7}
+  m_LocalPosition: {x: 0, y: 7.5, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -364,6 +364,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6054058774237248251, guid: dae24994e3640cb498fd569883411bba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4cf5e5d688cdfe849b2c241dcc00d19b, type: 2}
     - target: {fileID: -4216859302048453862, guid: dae24994e3640cb498fd569883411bba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -424,6 +429,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ambulence
       objectReference: {fileID: 0}
+    - target: {fileID: -113181020801827196, guid: dae24994e3640cb498fd569883411bba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 88d25f340b49bea4eacdb9f062ef58c3, type: 2}
+    - target: {fileID: 1711277887553122256, guid: dae24994e3640cb498fd569883411bba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4cf5e5d688cdfe849b2c241dcc00d19b, type: 2}
+    - target: {fileID: 4063835366044962077, guid: dae24994e3640cb498fd569883411bba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4cf5e5d688cdfe849b2c241dcc00d19b, type: 2}
+    - target: {fileID: 4196040851096478221, guid: dae24994e3640cb498fd569883411bba,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4cf5e5d688cdfe849b2c241dcc00d19b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dae24994e3640cb498fd569883411bba, type: 3}
 --- !u!1 &1004288023 stripped
@@ -508,7 +533,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -565,10 +590,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1543673761}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.53729963, y: 0, z: 0, w: 0.8433915}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 65, y: 0, z: 0}
