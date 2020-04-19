@@ -482,7 +482,6 @@ GameObject:
   m_Component:
   - component: {fileID: 586534805}
   - component: {fileID: 586534804}
-  - component: {fileID: 586534803}
   m_Layer: 0
   m_Name: Spot Light
   m_TagString: Untagged
@@ -490,18 +489,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &586534803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 586534802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b30bb6a9b67d154a81114d8546f348e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!108 &586534804
 Light:
   m_ObjectHideFlags: 0
@@ -587,7 +574,6 @@ GameObject:
   m_Component:
   - component: {fileID: 667744604}
   - component: {fileID: 667744603}
-  - component: {fileID: 667744602}
   m_Layer: 0
   m_Name: Spot Light (1)
   m_TagString: Untagged
@@ -595,18 +581,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &667744602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 667744601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b30bb6a9b67d154a81114d8546f348e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!108 &667744603
 Light:
   m_ObjectHideFlags: 0
@@ -973,31 +947,6 @@ MonoBehaviour:
   toggleTrafficLights:
     m_PersistentCalls:
       m_Calls: []
-  honk:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 586534803}
-        m_MethodName: OnHonk
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
-      - m_Target: {fileID: 667744602}
-        m_MethodName: OnHonk
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   accel: 15
   steering: 2
   handbrake: 5

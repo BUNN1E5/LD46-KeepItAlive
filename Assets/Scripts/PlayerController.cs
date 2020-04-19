@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
-    public UnityEvent toggleSiren, toggleTrafficLights, honk;
+    public UnityEvent toggleSiren, toggleTrafficLights;
 
 #pragma warning disable 0649
     [SerializeField] float accel, steering, handbrake, traction, maxVel, maxReverse, tireRot;
@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rb;
     Transform[] tires;
+    Light[] lights;
     float vert, horiz;
     bool isGrounded, isHandbrakeOn;
 
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = true;
         rb = GetComponent<Rigidbody>();
         tires = GetComponentsInChildren<Transform>();
+        lights = GetComponentsInChildren<Light>();
     }
 
     void Update()
@@ -31,17 +33,17 @@ public class PlayerController : MonoBehaviour
             vert = Input.GetAxis("Vertical");
         }
         horiz = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump")) // toggle siren
+        if (Input.GetButtonDown("Jump"))
         {
             toggleSiren.Invoke();
         }
-        if (Input.GetButtonDown("Jump2")) // toggle traffic lights
+        if (Input.GetButtonDown("Jump2"))
         {
             toggleTrafficLights.Invoke();
         }
-        if (Input.GetButtonDown("Jump3")) // honk
+        if (Input.GetButtonDown("Jump3"))
         {
-            honk.Invoke();
+            StartCoroutine(Honk());
         }
     }
 
@@ -87,5 +89,12 @@ public class PlayerController : MonoBehaviour
     public float GetAccelNormalized()
     {
         return vert;
+    }
+
+    IEnumerator Honk()
+    {
+        lights[0].intensity = lights[1].intensity = 100f;
+        yield return new WaitForSeconds(1f);
+        lights[0].intensity = lights[1].intensity = 25f;
     }
 }
