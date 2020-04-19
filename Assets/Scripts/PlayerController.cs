@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+    public UnityEvent toggleSiren, toggleTrafficLights, honk;
+
 #pragma warning disable 0649
     [SerializeField] float accel, steering, handbrake, traction, maxVel, maxReverse, tireRot;
 #pragma warning restore 0649
@@ -13,11 +16,11 @@ public class PlayerController : MonoBehaviour
     float vert, horiz;
     bool isGrounded, isHandbrakeOn;
 
-    void Awake()
+    void Start()
     {
+        isGrounded = true;
         rb = GetComponent<Rigidbody>();
         tires = GetComponentsInChildren<Transform>();
-        isGrounded = true;
     }
 
     void Update()
@@ -28,6 +31,18 @@ public class PlayerController : MonoBehaviour
             vert = Input.GetAxis("Vertical");
         }
         horiz = Input.GetAxis("Horizontal");
+        if (Input.GetButtonDown("Jump")) // toggle siren
+        {
+            toggleSiren.Invoke();
+        }
+        if (Input.GetButtonDown("Jump2")) // toggle traffic lights
+        {
+            toggleTrafficLights.Invoke();
+        }
+        if (Input.GetButtonDown("Jump3")) // honk
+        {
+            honk.Invoke();
+        }
     }
 
     void FixedUpdate()
