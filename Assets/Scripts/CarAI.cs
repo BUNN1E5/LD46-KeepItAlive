@@ -13,11 +13,13 @@ public class CarAI : MonoBehaviour
     Transform[] tires;
     Light[] lights;
     AudioSource[] sources;
+
+    [SerializeField, Range(0, 1)]
     float vert, horiz;
     bool isGrounded, isHandbrakeOn, isSirenOn;
 
 
-    Road road;
+    public Road road;
 
     void Start()
     {
@@ -28,20 +30,23 @@ public class CarAI : MonoBehaviour
         sources = GetComponents<AudioSource>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        vert = Input.GetAxis("Vertical");
-        horiz = Input.GetAxis("Horizontal");
-
-        if (false)
-        {
-            StartCoroutine(Honk());
-        }
-    }
-
     void FixedUpdate()
     {
+
+        if(road == null) //If road doesn't exist, just give up
+            return;
+
+        RaycastHit hit;
+
+        vert = 1;
+        if(Physics.SphereCast(this.transform.position, 1, this.transform.forward, out hit, 3)){
+            //SlowDown based on the distance
+            
+            //vert = hit.distance - GetSpeedNormalized();
+        }
+        horiz = Vector3.SignedAngle(this.transform.forward, road.roadDirection, Vector3.up) / 180;
+
+
         if (isGrounded)
         {
 			// acceleration
@@ -66,11 +71,13 @@ public class CarAI : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        isGrounded = true;
-
         if(other.transform.tag == "Road"){
             road = other.gameObject.GetComponent<Road>();
         }
+    }
+
+    void OnCollisionStay(){
+        isGrounded = true;
     }
 
     void OnCollisionExit()

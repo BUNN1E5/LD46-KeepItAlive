@@ -9,4 +9,8 @@ public class Road : MonoBehaviour
     public Vector3[] intersectionDirections;
     public Vector3 roadDirection;
 
+    public int ChooseDirectionFromIntersection(){
+        return Random.Range(0, intersectionDirections.Length);
+    }
+
 }
