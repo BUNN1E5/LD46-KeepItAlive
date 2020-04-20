@@ -40,12 +40,11 @@ public class StreetLayout : MonoBehaviour
     }
     
     void Start(){
-        GenerateConnections();
     }
 
     // Update is called once per frame
     void Update(){
-
+        GenerateConnections();
     }
 
     void OnDrawGizmos(){
