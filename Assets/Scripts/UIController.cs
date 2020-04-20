@@ -10,16 +10,24 @@ public class UIController : SingletonGeneric<UIController>
 #pragma warning restore 0649
 
     Slider health;
+    Button[] buttons;
+    Animator[] anims;
+    Text[] splashes;
     WaitWhile whileTrying;
-    bool gameIsOver, isInjecting;
+    bool isDead, isInjecting;
     int trialNum;
     float timer, countResuscitations;
 
     void Start()
     {
         health = GetComponentInChildren<Slider>();
+        buttons = GetComponentsInChildren<Button>();
+        anims = GetComponentsInChildren<Animator>();
+        splashes = GetComponentsInChildren<Text>();
         whileTrying = new WaitWhile(() => IsTrying());
         health.value = health.maxValue = maxHealth;
+        splashes[0].gameObject.SetActive(false);
+        splashes[1].gameObject.SetActive(false);
         StartCoroutine(BeginTrials());
     }
 
@@ -27,17 +35,21 @@ public class UIController : SingletonGeneric<UIController>
     {
         isInjecting = Input.GetButton("Fire1");
         countResuscitations += Input.GetButtonDown("Fire2") ? 1f : 0f;
+        anims[1].SetBool("Flash", trialNum == 1);
     }
 
     IEnumerator BeginTrials()
     {
-        while (!gameIsOver)
+        while (!isDead)
         {
             yield return whileTrying;
             health.gameObject.SetActive(false);
-            if (gameIsOver)
+            buttons[0].gameObject.SetActive(false);
+            buttons[1].gameObject.SetActive(false);
+            if (isDead)
             {
-                Debug.Log("Game Over.");
+                if (health.value <= 0f) splashes[0].gameObject.SetActive(true);
+                else splashes[1].gameObject.SetActive(true);
                 enabled = false;
                 break;
             }
@@ -45,13 +57,15 @@ public class UIController : SingletonGeneric<UIController>
             timer = trialDuration * difficulty;
             trialNum = Random.Range(0, 2);
             health.gameObject.SetActive(true);
+            buttons[0].gameObject.SetActive(true);
+            buttons[1].gameObject.SetActive(true);
             switch (trialNum)
             {
                 case 0:
-                    StartCoroutine(Resuscitate());
+                    StartCoroutine(Inject());
                     break;
                 case 1:
-                    StartCoroutine(Inject());
+                    StartCoroutine(Resuscitate());
                     break;
             }
         }
@@ -59,7 +73,9 @@ public class UIController : SingletonGeneric<UIController>
 
     IEnumerator Resuscitate()
     {
-        Debug.Log("Resuscitating...");
+        anims[2].SetBool("Alert", true);
+        yield return new WaitForSeconds(2f);
+        anims[2].SetBool("Alert", false);
         while (IsTrying())
         {
             health.value += countResuscitations * healRatio * maxHealth / difficulty - Time.deltaTime;
@@ -67,28 +83,43 @@ public class UIController : SingletonGeneric<UIController>
             timer -= Time.deltaTime;
             yield return null;
         }
-        Debug.Log("Done!");
     }
 
     IEnumerator Inject()
     {
-        Debug.Log("Injecting...");
+        anims[2].SetBool("Alert", true);
+        anims[trialNum].SetTrigger("Press");
+        yield return new WaitForSeconds(1f);
+        anims[trialNum].SetTrigger("Press");
+        yield return new WaitForSeconds(1f);
+        anims[2].SetBool("Alert", false);
         while (IsTrying())
         {
             health.value += isInjecting ? Time.deltaTime / difficulty : -Time.deltaTime;
             timer -= Time.deltaTime;
             yield return null;
         }
-        Debug.Log("Done!");
+        anims[trialNum].SetTrigger("Release");
     }
 
     public void CheckGameOver()
     {
-        if (health != null) gameIsOver = health.value <= 0f;
+        if (health != null) isDead = health.value <= 0f;
     }
 
     bool IsTrying()
     {
-        return timer > 0f && !gameIsOver;
+        return timer > 0f && !isDead;
+    }
+
+    public void OnVictory()
+    {
+        isDead = true;
+    }
+
+    public void OnFall()
+    {
+        health.value = 0f;
+        isDead = true;
     }
 }

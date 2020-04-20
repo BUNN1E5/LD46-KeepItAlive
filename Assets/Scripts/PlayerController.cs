@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
-    public UnityEvent toggleSiren, toggleTrafficLights;
+    public UnityEvent toggleSiren, toggleTrafficLights, fell;
 
 #pragma warning disable 0649
     [SerializeField] float accel, steering, handbrake, traction, maxVel, maxReverse, tireRot;
@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(Honk());
         }
+        if (transform.position.y < -10f) fell.Invoke();
     }
 
     void FixedUpdate()
