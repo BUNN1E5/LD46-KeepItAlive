@@ -41,14 +41,16 @@ public class UIController : SingletonGeneric<UIController>
 
     IEnumerator BeginTrials()
     {
+        difficulty -= 0.1f;
         while (!isDead)
         {
             yield return whileTrying;
+            difficulty += 0.1f;
             health.gameObject.SetActive(false);
             buttons[0].gameObject.SetActive(false);
             buttons[1].gameObject.SetActive(false);
             yield return new WaitForSeconds(Random.Range(minRestInterval, maxRestInterval) / difficulty);
-            timer = trialDuration * difficulty;
+            timer = trialDuration + difficulty - 1f;
             trialNum = Random.Range(0, 2);
             if (isDead) break;
             health.gameObject.SetActive(true);
@@ -77,7 +79,7 @@ public class UIController : SingletonGeneric<UIController>
         anims[2].SetBool("Alert", false);
         while (IsTrying())
         {
-            health.value += countResuscitations * healRatio * maxHealth / difficulty - Time.deltaTime;
+            health.value += countResuscitations * healRatio * maxHealth - Time.deltaTime * difficulty;
             countResuscitations = 0f;
             timer -= Time.deltaTime;
             yield return null;
