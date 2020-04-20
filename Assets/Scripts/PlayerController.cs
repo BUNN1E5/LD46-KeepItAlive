@@ -17,11 +17,11 @@ public class PlayerController : MonoBehaviour
     Light[] lights;
     AudioSource[] sources;
     float vert, horiz;
-    bool isGrounded, isHandbrakeOn, isSirenOn;
+    bool isHandbrakeOn, isSirenOn;
+    int groundContactPoints;
 
     void Start()
     {
-        isGrounded = true;
         rb = GetComponent<Rigidbody>();
         tires = GetComponentsInChildren<Transform>();
         lights = GetComponentsInChildren<Light>();
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isGrounded)
+        if (groundContactPoints > 0)
         {
 			// acceleration
             if ((rb.velocity.magnitude < maxVel && vert > 0f) || (rb.velocity.magnitude < maxReverse && vert < 0f))
@@ -79,12 +79,12 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter()
     {
-        isGrounded = true;
+        groundContactPoints++;
     }
 
     void OnCollisionExit()
     {
-        isGrounded = false;
+        groundContactPoints--;
     }
 
     public float GetSpeedNormalized()
