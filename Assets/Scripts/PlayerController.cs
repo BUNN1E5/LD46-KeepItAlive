@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     Transform[] tires;
     Light[] lights;
     AudioSource[] sources;
-    float vert, horiz;
+    float vert, horiz, vert2, horiz2;
     bool isHandbrakeOn, isSirenOn;
     int groundContactPoints;
 
@@ -52,6 +52,11 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Honk());
         }
         if (transform.position.y < -10f) fell.Invoke();
+        if (!rb.useGravity)
+        {
+            vert2 = Input.GetAxisRaw("Vertical2");
+            horiz2 = Input.GetAxisRaw("Horizontal2");
+        }
     }
 
     void FixedUpdate()
@@ -74,7 +79,10 @@ public class PlayerController : MonoBehaviour
                 rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * steering * horiz));
             }
         }
-
+        if (!rb.useGravity)
+        {
+            transform.rotation = Quaternion.Euler(transform.eulerAngles + transform.forward * steering * vert2 + transform.up * steering * horiz2);
+        }
         tires[2].localEulerAngles = tires[3].localEulerAngles = Vector3.up * tireRot * horiz;
     }
 
@@ -105,5 +113,16 @@ public class PlayerController : MonoBehaviour
         lights[0].intensity = lights[1].intensity = 100f;
         yield return new WaitForSeconds(1f);
         lights[0].intensity = lights[1].intensity = 25f;
+    }
+
+    public void MaximumOverdrive()
+    {
+        accel = 25f;
+        steering = 5f;
+        maxVel = float.MaxValue;
+        maxReverse = float.MaxValue;
+        tireRot = 90f;
+        rb.useGravity = false;
+        groundContactPoints = int.MaxValue;
     }
 }
