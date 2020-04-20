@@ -28,6 +28,7 @@ public class UIController : SingletonGeneric<UIController>
         health.value = health.maxValue = maxHealth;
         splashes[0].gameObject.SetActive(false);
         splashes[1].gameObject.SetActive(false);
+        splashes[2].gameObject.SetActive(false);
         StartCoroutine(BeginTrials());
     }
 
@@ -46,16 +47,10 @@ public class UIController : SingletonGeneric<UIController>
             health.gameObject.SetActive(false);
             buttons[0].gameObject.SetActive(false);
             buttons[1].gameObject.SetActive(false);
-            if (isDead)
-            {
-                if (health.value <= 0f) splashes[0].gameObject.SetActive(true);
-                else splashes[1].gameObject.SetActive(true);
-                enabled = false;
-                break;
-            }
             yield return new WaitForSeconds(Random.Range(minRestInterval, maxRestInterval) / difficulty);
             timer = trialDuration * difficulty;
             trialNum = Random.Range(0, 2);
+            if (isDead) break;
             health.gameObject.SetActive(true);
             buttons[0].gameObject.SetActive(true);
             buttons[1].gameObject.SetActive(true);
@@ -69,6 +64,10 @@ public class UIController : SingletonGeneric<UIController>
                     break;
             }
         }
+        if (health.value <= 0f) splashes[0].gameObject.SetActive(true);
+        else splashes[1].gameObject.SetActive(true);
+        splashes[2].gameObject.SetActive(true);
+        enabled = false;
     }
 
     IEnumerator Resuscitate()
