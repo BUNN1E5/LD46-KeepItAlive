@@ -79,7 +79,7 @@ public class UIController : SingletonGeneric<UIController>
         anims[2].SetBool("Alert", false);
         while (IsTrying())
         {
-            health.value += countResuscitations * healRatio * maxHealth - Time.deltaTime * difficulty;
+            health.value += countResuscitations * healRatio * maxHealth * difficulty - Time.deltaTime * difficulty;
             countResuscitations = 0f;
             timer -= Time.deltaTime;
             yield return null;
@@ -96,7 +96,7 @@ public class UIController : SingletonGeneric<UIController>
         anims[2].SetBool("Alert", false);
         while (IsTrying())
         {
-            health.value += isInjecting ? Time.deltaTime / difficulty : -Time.deltaTime;
+            health.value += isInjecting ? Time.deltaTime / difficulty : -Time.deltaTime * difficulty;
             timer -= Time.deltaTime;
             yield return null;
         }
