@@ -3,8 +3,7 @@
 --- !u!1 &2569771231291486166
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2473035191308855240, guid: 891faea8d2d7c334cb24ed53af920f35,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
@@ -25,8 +24,7 @@ GameObject:
 --- !u!4 &2569771231291486167
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2473035191308855241, guid: 891faea8d2d7c334cb24ed53af920f35,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2569771231291486166}
@@ -40,8 +38,7 @@ Transform:
 --- !u!20 &2569771231291486162
 Camera:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2473035191308855244, guid: 891faea8d2d7c334cb24ed53af920f35,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2569771231291486166}
@@ -71,7 +68,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: dd16c2a4b982369dfb7ffe96425a6162, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -84,8 +81,7 @@ Camera:
 --- !u!81 &2569771231291486165
 AudioListener:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2473035191308855247, guid: 891faea8d2d7c334cb24ed53af920f35,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2569771231291486166}
@@ -93,8 +89,7 @@ AudioListener:
 --- !u!114 &2569771231291486164
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2473035191308855246, guid: 891faea8d2d7c334cb24ed53af920f35,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2569771231291486166}

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
@@ -9,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public UnityEvent toggleSiren, toggleTrafficLights, fell;
 
 #pragma warning disable 0649
-    [SerializeField] float accel, steering, handbrake, traction, maxVel, maxReverse, tireRot;
+    [SerializeField] float accel, steering, handbrake, traction, maxVel, maxReverse;
 #pragma warning restore 0649
 
     Rigidbody rb;
@@ -17,8 +16,10 @@ public class PlayerController : MonoBehaviour
     Light[] lights;
     AudioSource[] sources;
     float vert, horiz, vert2, horiz2;
-    bool isHandbrakeOn, isSirenOn;
+    bool isHandbrakeOn, isSirenOn, isInvincible;
     int groundContactPoints;
+
+    const float tireRot = 35f;
 
     void Start()
     {
@@ -30,32 +31,39 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (transform.position.y < -10f) fell.Invoke();
+        horiz = Input.GetAxis("Horizontal");
+        vert2 = Input.GetAxisRaw("Vertical2");
+        horiz2 = Input.GetAxisRaw("Horizontal2");
+
         isHandbrakeOn = Input.GetAxisRaw("Fire3") > 0f;
         if (!isHandbrakeOn)
         {
             vert = Input.GetAxis("Vertical");
         }
-        horiz = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump"))
-        {
-            // TODO pitch rise and fall for siren on/off and engine speed
-            if (isSirenOn = !isSirenOn) sources[1].Play();
-            else sources[1].Stop();
-            toggleSiren.Invoke();
-        }
-        if (Input.GetButtonDown("Jump2"))
-        {
-            toggleTrafficLights.Invoke();
-        }
+
         if (Input.GetButtonDown("Jump3"))
         {
             StartCoroutine(Honk());
         }
-        if (transform.position.y < -10f) fell.Invoke();
-        if (!rb.useGravity)
+
+        if (Input.GetButtonDown("Jump"))
         {
-            vert2 = Input.GetAxisRaw("Vertical2");
-            horiz2 = Input.GetAxisRaw("Horizontal2");
+            isSirenOn = !isSirenOn;
+            toggleSiren.Invoke();
+        }
+        if (isSirenOn && sources[1].volume < 1f)
+        {
+            sources[1].volume = Mathf.Min(sources[1].volume + Time.deltaTime, 1f);
+        }
+        else if (!isSirenOn && sources[1].volume > 0f)
+        {
+            sources[1].volume = Mathf.Max(sources[1].volume - Time.deltaTime, 0f);
+        }
+
+        if (Input.GetButtonDown("Jump2"))
+        {
+            toggleTrafficLights.Invoke();
         }
     }
 
@@ -79,11 +87,13 @@ public class PlayerController : MonoBehaviour
                 rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * steering * horiz));
             }
         }
-        if (!rb.useGravity)
-        {
-            transform.rotation = Quaternion.Euler(transform.eulerAngles + transform.forward * steering * vert2 + transform.up * steering * horiz2);
-        }
         tires[2].localEulerAngles = tires[3].localEulerAngles = Vector3.up * tireRot * horiz;
+
+        if (isInvincible)
+        {
+            rb.AddForce(transform.up * accel * vert2);
+            rb.AddForce(transform.right * accel * horiz2);
+        }
     }
 
     void OnCollisionEnter()
@@ -117,12 +127,10 @@ public class PlayerController : MonoBehaviour
 
     public void MaximumOverdrive()
     {
+        isInvincible = true;
         accel = 25f;
-        steering = 5f;
         maxVel = float.MaxValue;
         maxReverse = float.MaxValue;
-        tireRot = 90f;
-        rb.useGravity = false;
         groundContactPoints = int.MaxValue;
     }
 }

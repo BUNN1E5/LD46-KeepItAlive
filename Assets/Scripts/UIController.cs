@@ -51,25 +51,16 @@ public class UIController : SingletonGeneric<UIController>
             buttons[1].gameObject.SetActive(false);
             yield return new WaitForSeconds(Random.Range(minRestInterval, maxRestInterval) / difficulty);
             timer = trialDuration + difficulty - 1f;
-            trialNum = Random.Range(0, 2);
+            trialNum = Mathf.RoundToInt(Random.value);
             if (isDead) break;
             health.gameObject.SetActive(true);
             buttons[0].gameObject.SetActive(true);
             buttons[1].gameObject.SetActive(true);
-            switch (trialNum)
-            {
-                case 0:
-                    StartCoroutine(Inject());
-                    break;
-                case 1:
-                    StartCoroutine(Resuscitate());
-                    break;
-            }
+            StartCoroutine(trialNum == 0 ? Inject() : Resuscitate());
         }
         if (health.value <= 0f) splashes[0].gameObject.SetActive(true);
         else splashes[1].gameObject.SetActive(true);
         splashes[2].gameObject.SetActive(true);
-        enabled = false;
     }
 
     IEnumerator Resuscitate()
@@ -77,6 +68,7 @@ public class UIController : SingletonGeneric<UIController>
         anims[2].SetBool("Alert", true);
         yield return new WaitForSeconds(2f);
         anims[2].SetBool("Alert", false);
+        countResuscitations = 0f;
         while (IsTrying())
         {
             health.value += countResuscitations * healRatio * maxHealth * difficulty - Time.deltaTime * difficulty;

@@ -4,48 +4,32 @@ using UnityEngine;
 
 public class CarAI : MonoBehaviour
 {
+    public Road road;
 
-    #pragma warning disable 0649
-    [SerializeField] float accel, steering, handbrake, traction, maxVel, maxReverse, tireRot;
-    #pragma warning restore 0649
+#pragma warning disable 0649
+    [SerializeField] float accel, steering, handbrake, traction, maxVel, maxReverse;
+    [SerializeField, Range(0, 1)] float vert, horiz;
+#pragma warning restore 0649
 
     Rigidbody rb;
     Transform[] tires;
-    Light[] lights;
-    AudioSource[] sources;
+    bool isGrounded;
 
-    [SerializeField, Range(0, 1)]
-    float vert, horiz;
-    bool isGrounded, isHandbrakeOn, isSirenOn;
-
-
-    public Road road;
+    const float tireRot = 35f;
 
     void Start()
     {
         isGrounded = true;
         rb = GetComponent<Rigidbody>();
         tires = GetComponentsInChildren<Transform>();
-        lights = GetComponentsInChildren<Light>();
-        sources = GetComponents<AudioSource>();
     }
 
     void FixedUpdate()
     {
-
-        if(road == null) //If road doesn't exist, just give up
-            return;
-
-        RaycastHit hit;
+        if (road == null) return; // If road doesn't exist, just give up
 
         vert = 1;
-        if(Physics.SphereCast(this.transform.position, 1, this.transform.forward, out hit, 3)){
-            //SlowDown based on the distance
-            
-            //vert = hit.distance - GetSpeedNormalized();
-        }
-        horiz = Vector3.SignedAngle(this.transform.forward, road.ChooseDirectionFromIntersection(this.gameObject.GetInstanceID()), Vector3.up) / 180;
-
+        horiz = Vector3.SignedAngle(transform.forward, road.intersectionDirections[0], Vector3.up) / 180;
 
         if (isGrounded)
         {
@@ -56,14 +40,7 @@ public class CarAI : MonoBehaviour
             }
 
 			// steering
-            if (isHandbrakeOn)
-            {
-                rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * Mathf.Pow(handbrake, traction) * horiz * rb.velocity.magnitude / maxVel));
-            }
-            else
-            {
-                rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * steering * horiz));
-            }
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(transform.up * steering * horiz));
         }
 
         tires[2].localEulerAngles = tires[3].localEulerAngles = Vector3.up * tireRot * horiz;
@@ -71,7 +48,8 @@ public class CarAI : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if(other.transform.tag == "Road"){
+        if (other.transform.tag == "Road")
+        {
             road = other.gameObject.GetComponent<Road>();
         }
     }
@@ -83,24 +61,5 @@ public class CarAI : MonoBehaviour
     void OnCollisionExit()
     {
         isGrounded = false;
-    }
-
-    public float GetSpeedNormalized()
-    {
-        return vert < 0f ? -rb.velocity.magnitude / maxReverse : rb.velocity.magnitude / maxVel;
-    }
-
-    public float GetAccelNormalized()
-    {
-        return vert;
-    }
-
-    IEnumerator Honk()
-    {
-        sources[0].pitch = Random.Range(0.95f, 1.05f);
-        sources[0].PlayOneShot(sources[0].clip);
-        lights[0].intensity = lights[1].intensity = 100f;
-        yield return new WaitForSeconds(1f);
-        lights[0].intensity = lights[1].intensity = 25f;
     }
 }
