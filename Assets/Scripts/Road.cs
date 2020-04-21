@@ -7,8 +7,8 @@ public class Road : MonoBehaviour
     public bool isLightRed = false;
     public Vector3[] intersectionDirections;
 
-    public int ChooseDirectionFromIntersection(){
-        return Random.Range(0, intersectionDirections.Length);
+    public Vector3 ChooseDirectionFromIntersection(){
+        return intersectionDirections[Random.Range(0, intersectionDirections.Length)];
     }
 
 }
