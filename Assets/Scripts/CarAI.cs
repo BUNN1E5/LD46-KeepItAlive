@@ -44,7 +44,7 @@ public class CarAI : MonoBehaviour
             
             //vert = hit.distance - GetSpeedNormalized();
         }
-        horiz = Vector3.SignedAngle(this.transform.forward, road.ChooseDirectionFromIntersection(), Vector3.up) / 180;
+        horiz = Vector3.SignedAngle(this.transform.forward, road.ChooseDirectionFromIntersection(this.gameObject.GetInstanceID()), Vector3.up) / 180;
 
 
         if (isGrounded)
